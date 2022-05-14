@@ -1,5 +1,6 @@
 if __name__ == '__main__':
     import platform
+    from src.util.format import format_data
 
     match platform.system().lower():
         case 'linux':
@@ -9,9 +10,4 @@ if __name__ == '__main__':
             for dev in find_pci_devices():
                 data = construct_pcip(dev)
 
-                print(
-                    f'{data.get("dbf")} ' +
-                    f'{data.get("dev-ven")} ' +
-                    f'{data.get("acpi")} = ' +
-                    f'{data.get("pcip")}'
-                )
+                print(*format_data(data))
