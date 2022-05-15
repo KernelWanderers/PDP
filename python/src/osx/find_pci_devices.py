@@ -1,8 +1,6 @@
 import binascii
 from .ioreg import *
 from .extract_id import extract_id
-from .format_pci_debug import format_pci_debug
-
 
 def find_pci_devices():
     devices = []
