@@ -11,15 +11,13 @@ def find_pci_devices():
     for path in os.listdir(pci_dev_path):
         slot, func = get_valid_pcip(path)
 
-        if os.path.isdir(os.path.join(pci_dev_path, path, 'firmware_node')):
-            acpi_path = open(os.path.join(pci_dev_path, path, 'firmware_node', 'path'), 'r').read().replace('\n', '')
-        else:
-            acpi_path = "ACPI_Path_Not_Found"
+        if not os.path.isdir(os.path.join(pci_dev_path, path, 'firmware_node')):
+            continue
 
         devices.append({
             'path': os.path.join(pci_dev_path, path),
             'components': (slot, func),
-            'acpi': acpi_path
+            'acpi': open(os.path.join(pci_dev_path, path, 'firmware_node', 'path'), 'r').read().replace('\n', '')
         })
         
     return devices
