@@ -2,15 +2,19 @@ if __name__ == '__main__':
     import platform
     from src.util.format import format_data_linux
 
+    print()
     match platform.system().lower():
         case 'linux':
             from src.linux.find_pci_devices import find_pci_devices
             from src.linux.construct_pcip import construct_pcip
 
+            _format_data = []
             for dev in find_pci_devices():
                 data = construct_pcip(dev)
 
-                print(*format_data_linux(data))
+                _format_data.append(data)
+
+            print(*format_data_linux(_format_data))
         
         case 'darwin':
             from src.osx.find_pci_devices import find_pci_devices
@@ -34,5 +38,4 @@ if __name__ == '__main__':
                     'PCI-Path': pci
                 })
 
-            print()
             print(*format_data_osx(_format_data))
