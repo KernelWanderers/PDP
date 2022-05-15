@@ -1,6 +1,6 @@
 if __name__ == '__main__':
     import platform
-    from src.util.format import format_data
+    from src.util.format import format_data_linux
 
     match platform.system().lower():
         case 'linux':
@@ -10,4 +10,29 @@ if __name__ == '__main__':
             for dev in find_pci_devices():
                 data = construct_pcip(dev)
 
-                print(*format_data(data))
+                print(*format_data_linux(data))
+        
+        case 'darwin':
+            from src.osx.find_pci_devices import find_pci_devices
+            from src.osx.construct_pcip import construct_pcip
+            from src.osx.pcip_from_plane import pcip_from_plane
+            from src.util.format import format_data_osx
+
+            _format_data = []
+
+            for dev in find_pci_devices():
+                data = construct_pcip(dev.get('Device'))
+                acpi_plane, pci = pcip_from_plane(dev.get('Plane'))
+
+                if not data:
+                    data = pci
+
+                _format_data.append({
+                    'PCI-Debug': dev.get('PCI-Debug'),
+                    'Dev-Ven': dev.get('Dev-Ven'),
+                    'ACPI-Plane': acpi_plane,
+                    'PCI-Path': pci
+                })
+
+            print()
+            print(*format_data_osx(_format_data))
