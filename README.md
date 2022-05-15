@@ -7,7 +7,7 @@ App that lists all PCI device paths (if possible); replica of https://github.com
 * [x] Linux Python implementation
 * [ ] Linux C implementation
 * [x] macOS Python implementation
-* [ ] macOS C implementation (if possible?)
+* [ ] macOS C implementation
 * [ ] Windows Python implementation
 * [ ] Windows C implementation
 
