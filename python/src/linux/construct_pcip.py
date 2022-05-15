@@ -38,7 +38,7 @@ def construct_pcip(device):
         pcip = '/'.join(pcip_div)
 
     return {
-        'dbf': path.split('/')[-1],
+        'desc': path.split('/')[-1].split(':')[1:],
         'pcip': pcip,
         'dev-ven': find_dev_ids(path),
         'acpi': acpi
