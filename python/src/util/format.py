@@ -13,6 +13,33 @@ def longest_seq(data, keys=[]):
 
     return longest
 
+def format_data_win(data):
+    if type(data) != list:
+        return []
+
+    to_format = ['']
+    longest = longest_seq(data, ['PCI-Debug', 'Dev-Ven', 'ACPI-Path'])
+
+    for item in data:
+        pcid = item.get('PCI-Debug') + ' '
+        dev_ven = item.get('Dev-Ven') + ' '
+        pcip = item.get('PCI-Path')
+        acpi = item.get('ACPI-Path')
+
+        current = len(pcid) + len(dev_ven) + len(acpi)
+
+        to_format += [
+            pcid,
+            dev_ven,
+            acpi,
+            ' ' * (longest - current),
+            '= ',
+            pcip,
+            '\n'
+        ]
+
+    return to_format
+
 
 def format_data_osx(data):
     if type(data) != list:
