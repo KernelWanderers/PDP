@@ -2,7 +2,11 @@ import binascii
 from .ioreg import *
 from .extract_id import extract_id
 
+
 def find_pci_devices():
+    """
+    Finds all PCI devices by matching against the `IOPCIDevice` provider class.
+    """
     devices = []
     device_desc = {
         "IOProviderClass": "IOPCIDevice",
@@ -36,18 +40,16 @@ def find_pci_devices():
         PCI_DEBUG = device.get('pcidebug')
 
         pcid = PCI_DEBUG.split('(')[0]
+        vals = [':', '.', '']
 
-        val = ':'.join([hex(int(x)).zfill(4).replace('0x', '')
-                       for x in pcid.split(':')])
-        split = val.split(':')
-        val = ':'.join(split)
-        f = len(split[0])
-        s = len(split[1])
-        val = list(val.replace('0x', ''))
-        val[f + s + 1] = '.'
-        val[f + s + 2] = val[f + s + 3]
-        val = val[:f + s + 3]
-        PCI_DEBUG = ''.join(val)
+        PCI_DEBUG = ''.join(
+            [
+                hex(int(x)).zfill(4).replace('0x', '') + vals[i]
+                if i != 2
+                else hex(int(x)).replace('0x', '')
+                for (i, x) in enumerate(pcid.split(':'))
+            ]
+        )
 
         if PCI_DEBUG:
             data['PCI-Debug'] = PCI_DEBUG

@@ -9,14 +9,14 @@ def construct_pcip(parent_entry):
     while entry:
         if IOObjectConformsTo(entry, b'IOPCIDevice'):
             try:
-                bus, func = [
+                bus, func = ([
                     hex(int(i, 16)) for i in
                     ioname_t_to_str(
                         IORegistryEntryGetLocationInPlane(
                             entry, b'IOService', None
                         )[1]
-                    ).split(',') + ['0']
-                ]
+                    ).split(',')
+                ] + ['0x0'])[:2]
 
                 paths.append(
                     f'/Pci({bus},{func})'
