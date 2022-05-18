@@ -39,3 +39,20 @@ if __name__ == '__main__':
                 })
 
             print(*format_data_osx(_format_data))
+
+        case 'windows':
+            from src.windows.find_pci_devices import find_pci_devices
+            from src.windows.get_device_data import get_device_data
+            from src.util.format import format_data_win
+
+            _format_data = []
+
+            for device in find_pci_devices():
+                device_data = get_device_data(device)
+
+                if not device_data.get('ACPI-Path'):
+                    continue
+
+                _format_data.append(device_data)
+
+            print(*format_data_win(_format_data))
